@@ -1,0 +1,56 @@
+# Data
+data/
+datasets/
+dataset/
+raw/
+interim/
+processed/
+
+# Research outputs
+results/
+outputs/
+experiments/
+logs/
+
+# Model artifacts
+checkpoints/
+weights/
+models/
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.engine
+
+# Secrets
+.env
+.env.*
+*.key
+*.pem
+secrets/
+credentials/
+
+# Private research
+thesis/
+private/
+internal/
+research_private/
+THESIS_CODE_MAP.md
+VERIFIED_CODE_FACTS.md
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# macOS
+.DS_Store
+
+# VS Code / IDE
+.vscode/
+.idea/
