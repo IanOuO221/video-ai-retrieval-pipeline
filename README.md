@@ -31,6 +31,18 @@ python demo/run_yolov8_bytetrack.py \
 
 See [demo/README.md](demo/README.md) for setup and usage. This demo illustrates generic detection and tracking behavior; it is not the complete thesis pipeline and does not implement the research-specific video selection method.
 
+## Experimental Results
+
+The public evaluation below shows a held-out cross-category setting. Only high-level results are reported; research-specific objective functions, training targets, feature construction, dataset details, and implementation details are intentionally omitted.
+
+![Retention budget vs retained evidence quality](assets/results_budget_vs_quality.png)
+
+Under constrained retention budgets, the proposed budget-aware selection approach retains stronger evidence coverage across the shown budgets than the public baselines.
+
+![40% retention end-to-end summary](assets/results_40pct_summary.png)
+
+At approximately 40% retention, the proposed approach achieved 0.857 normalized retained coverage, reduced selection miss to 4%, and reached 62% Hit@10 in the held-out cross-category evaluation.
+
 ## Pipeline
 
 1. **Video Stream**  
