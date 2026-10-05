@@ -19,8 +19,6 @@ After a query arrives, retained evidence can be processed using multimodal model
 
 Stage 1 performs lightweight visual processing and learned budget-aware evidence selection before a future query is known. Stage 2 performs multimodal semantic understanding and retrieval after a query arrives.
 
-The editable architecture source is available as standalone TikZ at [assets/architecture_public.tex](assets/architecture_public.tex).
-
 ## Public Demo
 
 This repository includes a standalone public-safe YOLOv8 + ByteTrack tracking demo representing the lightweight computer-vision front end of the broader system.
