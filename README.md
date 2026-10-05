@@ -15,9 +15,11 @@ After a query arrives, retained evidence can be processed using multimodal model
 
 ## System Architecture
 
-The public architecture diagram source is available as standalone TikZ at [assets/architecture_public.tex](assets/architecture_public.tex).
+![Public system architecture](assets/architecture_public.png)
 
-Generated PDF and PNG versions can be added when local LaTeX and PDF-to-PNG tooling are available.
+Stage 1 performs lightweight visual processing and learned budget-aware evidence selection before a future query is known. Stage 2 performs multimodal semantic understanding and retrieval after a query arrives.
+
+The editable architecture source is available as standalone TikZ at [assets/architecture_public.tex](assets/architecture_public.tex).
 
 ## Public Demo
 

@@ -8,7 +8,7 @@
 
 \begin{document}
 \begin{tikzpicture}[
-  node distance=5.8mm,
+  node distance=5.3mm,
   >=Latex,
   font=\sffamily,
   box/.style={
@@ -56,6 +56,11 @@
     inner sep=5pt,
     fill=white
   },
+  stagelabel/.style={
+    font=\sffamily\bfseries,
+    align=center,
+    text=black!75
+  },
   arr/.style={->,thick,draw=black!70}
 ]
 
@@ -66,7 +71,8 @@
 \node[stageone, below=of structure] (selection) {Learned Budget-Aware\\Video Selection};
 \node[boundary, below=of selection] (evidence) {Retained Video Evidence};
 \node[box, below=of evidence] (query) {Future Query Arrives};
-\node[stagetwo, below=of query] (retrieval) {VLM-based Semantic\\Understanding \& Retrieval};
+\node[stagetwo, below=of query] (understanding) {VLM-based Semantic\\Understanding};
+\node[stagetwo, below=of understanding] (retrieval) {Semantic Retrieval};
 
 \draw[arr] (stream) -- (segment);
 \draw[arr] (segment) -- (analysis);
@@ -74,7 +80,11 @@
 \draw[arr] (structure) -- (selection);
 \draw[arr] (selection) -- (evidence);
 \draw[arr] (evidence) -- (query);
-\draw[arr] (query) -- (retrieval);
+\draw[arr] (query) -- (understanding);
+\draw[arr] (understanding) -- (retrieval);
+
+\node[stagelabel, left=0.9cm of analysis] (stage1label) {Stage 1\\Pre-query\\Selection};
+\node[stagelabel, left=0.9cm of understanding] (stage2label) {Stage 2\\Query-time\\Retrieval};
 
 \node[note, right=1.25cm of analysis] (stage1note) {
   \textbf{Stage 1: Pre-query Selection}\\[2pt]
@@ -87,7 +97,7 @@
 };
 
 \draw[arr, draw=blue!65!black] (stage1note.west) -- (analysis.east);
-\draw[arr, draw=teal!65!black] (stage2note.west) -- (retrieval.east);
+\draw[arr, draw=teal!65!black] (stage2note.west) -- (understanding.east);
 
 \end{tikzpicture}
 \end{document}
