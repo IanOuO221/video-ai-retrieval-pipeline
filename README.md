@@ -1,27 +1,66 @@
 # Efficient Video AI Retrieval Pipeline
 
 > Public portfolio version of an ongoing master's thesis research project.
-> Research-specific algorithms, datasets, and experimental details are intentionally omitted.
 
 ![Status](https://img.shields.io/badge/Status-Active%20%2F%20Ongoing-blue)
 
-This repository presents a public portfolio version of an ongoing master's thesis research project on efficient video understanding and retrieval under limited storage and computational resources. It highlights system design, computer-vision engineering, and selected public-safe implementation work.
+This project investigates efficient long-term video understanding under limited storage and computation. Instead of retaining and repeatedly processing all continuous surveillance video, the system selects useful video evidence before future user queries are known, then performs multimodal semantic understanding and retrieval after a query arrives. YOLOv8 and ByteTrack serve as lightweight front-end components within a broader Video AI retrieval pipeline.
 
-## Overview
+## Motivation & Research Question
 
-Continuous surveillance video creates large amounts of redundant visual data. This project explores an efficient Video AI pipeline that performs lightweight visual analysis and learned video selection under limited storage and computational resources before future queries are known.
+Continuous surveillance systems generate large volumes of redundant video. Keeping and processing everything indefinitely is expensive in both storage and computation.
 
-After a query arrives, retained evidence can be processed using multimodal models for semantic understanding and retrieval.
+The central research question is:
+
+> Before future queries are known, which video evidence should be retained under a limited budget so that useful information remains available for later semantic retrieval?
+
+This motivates a two-stage system design: **Stage 1 - Pre-query Selection**, where incoming video is analyzed and selected before query intent is known, and **Stage 2 - Query-time Retrieval**, where retained evidence is interpreted and retrieved after a user query arrives.
+
+## Project Goal
+
+The goal is not simply object detection or tracking. The goal is to build and evaluate an end-to-end Video AI pipeline that:
+
+- Processes continuous video using lightweight visual analysis
+- Represents candidate video evidence for machine-learning workflows
+- Performs learned budget-aware selection before future queries are known
+- Retains a compact subset of useful evidence
+- Performs VLM-based understanding and semantic retrieval after queries arrive
+- Evaluates tradeoffs between retention budget, evidence quality, downstream retrieval performance, and processing cost
 
 ## System Architecture
 
 ![Public system architecture](assets/architecture_public.png)
 
-Stage 1 performs lightweight visual processing and learned budget-aware evidence selection before a future query is known. Stage 2 performs multimodal semantic understanding and retrieval after a query arrives.
+**Stage 1 - Pre-query Selection:** lightweight visual analysis and learned budget-aware selection decide what evidence survives under storage and computation constraints.
+
+**Stage 2 - Query-time Retrieval:** after a query arrives, multimodal models interpret and retrieve relevant information from the retained evidence.
+
+## My Work
+
+- Designed and implemented the end-to-end experimental Video AI pipeline.
+- Built long-form video preprocessing and candidate-segmentation workflows.
+- Integrated YOLOv8 and ByteTrack for lightweight object detection and tracking.
+- Designed structured video representations for downstream machine learning.
+- Developed and evaluated learned budget-aware video selection.
+- Integrated VLM-based semantic understanding and embedding-based retrieval.
+- Built evaluation workflows across multiple retention budgets and held-out data.
+- Analyzed selection quality, retrieval performance, and resource-quality tradeoffs.
+
+## Experimental Results
+
+The public evaluation below shows a small-scale held-out cross-category evaluation. Only selected high-level results are reported; research-specific objective functions, training targets, feature construction, dataset details, and implementation details are intentionally omitted. These results should be interpreted as preliminary experimental evidence rather than large-scale benchmark results.
+
+![Retention budget vs retained evidence quality](assets/results_budget_vs_quality.png)
+
+In this small-scale held-out evaluation, the proposed approach showed higher retained evidence coverage than the reported public baselines across the shown retention budgets.
+
+![40% retention end-to-end summary](assets/results_40pct_summary.png)
+
+At approximately 40% retention, the proposed approach achieved 0.857 normalized retained coverage, reduced selection miss to 4%, and reached 62% Hit@10 in the evaluated sample. Evaluation is currently limited in scale; broader validation is part of ongoing research.
 
 ## Public Demo
 
-This repository includes a standalone public-safe YOLOv8 + ByteTrack tracking demo representing the lightweight computer-vision front end of the broader system.
+This repository includes a standalone public-safe YOLOv8 + ByteTrack tracking demo for the lightweight computer-vision front end.
 
 ```bash
 python demo/run_yolov8_bytetrack.py \
@@ -29,97 +68,17 @@ python demo/run_yolov8_bytetrack.py \
     --output outputs/tracked.mp4
 ```
 
-See [demo/README.md](demo/README.md) for setup and usage. This demo illustrates generic detection and tracking behavior; it is not the complete thesis pipeline and does not implement the research-specific video selection method.
-
-## Experimental Results
-
-The public evaluation below shows a held-out cross-category setting. Only high-level results are reported; research-specific objective functions, training targets, feature construction, dataset details, and implementation details are intentionally omitted.
-
-![Retention budget vs retained evidence quality](assets/results_budget_vs_quality.png)
-
-Under constrained retention budgets, the proposed budget-aware selection approach retains stronger evidence coverage across the shown budgets than the public baselines.
-
-![40% retention end-to-end summary](assets/results_40pct_summary.png)
-
-At approximately 40% retention, the proposed approach achieved 0.857 normalized retained coverage, reduced selection miss to 4%, and reached 62% Hit@10 in the held-out cross-category evaluation.
-
-## Pipeline
-
-1. **Video Stream**  
-   Continuous surveillance video is treated as a long-form input stream.
-
-2. **Candidate Video Segmentation**  
-   Incoming video is divided into manageable candidate segments for downstream processing.
-
-3. **Lightweight Visual Analysis**  
-   Public-safe computer vision components such as YOLOv8n and ByteTrack support object detection and multi-object tracking. A runnable generic demo of this stage is included in this repository.
-
-4. **Structured Video Representation**  
-   Visual observations are organized into structured representations suitable for machine-learning workflows.
-
-5. **Learned Budget-Aware Video Selection**  
-   A learned selection stage retains informative evidence under storage and computation limits before future queries are known.
-
-6. **Retained Video Evidence**  
-   Selected evidence forms a compact public-facing abstraction of what remains available for later analysis.
-
-7. **VLM-based Semantic Understanding**  
-   When a future query arrives, retained evidence can be interpreted using Vision-Language Models.
-
-8. **Semantic Retrieval**  
-   Embedding-based retrieval can support query-time search over retained video evidence.
-
-## What I Built
-
-Overall research system experience:
-
-- Long-form surveillance video preprocessing
-- Candidate video generation workflow
-- Object detection pipeline experience
-- Multi-object tracking workflow experience
-- Structured visual representation design
-- Supervised machine-learning experimentation
-- Budget-aware video selection at a high level
-- Multimodal video understanding workflow
-- Semantic embedding and retrieval workflow
-- End-to-end evaluation workflow design
-
-Publicly included in this repository:
-
-- Generic YOLOv8 video object detection demo
-- Generic ByteTrack multi-object tracking demo
-- Track ID and class-label visualization
-- Annotated video export workflow
-- Public architecture and project-scope documentation
+See [demo/README.md](demo/README.md) for setup and usage. This demo is not the full research system and does not contain the unpublished budget-aware selection implementation.
 
 ## Tech Stack
 
-- Python
-- YOLOv8
-- ByteTrack
-- OpenCV
-- PyTorch
-- scikit-learn
-- XGBoost
-- Vision-Language Models (VLM)
-- Embedding-based Retrieval
-- Git
-
-## Engineering Highlights
-
-- Processing continuous and long-form video
-- Detection and tracking pipeline organization
-- Structured feature extraction for video AI workflows
-- Supervised ML experimentation practices
-- Multimodal inference and semantic retrieval concepts
-- End-to-end experimental evaluation workflow
-- Clear public/private repository boundaries
+Python, PyTorch, OpenCV, YOLOv8, ByteTrack, scikit-learn, XGBoost, Vision-Language Models, Embedding Retrieval, Git
 
 ## Repository Scope
 
-This public repository focuses on system architecture, a runnable public-safe computer-vision demo, and selected engineering documentation. Research-specific algorithms, private datasets, full experiments, and unpublished thesis details remain outside this repository.
+This repository is a public portfolio version of ongoing research. It includes system-level architecture, selected public-safe experimental results, and a runnable lightweight CV demo.
 
-Additional technical details can be discussed during interviews where appropriate.
+It intentionally excludes unpublished selection implementation, research-specific formulations, private datasets, and full experimental artifacts.
 
 ## Status
 
